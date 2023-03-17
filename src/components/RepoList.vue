@@ -1,7 +1,7 @@
 <template>
   <div class="p-12">
     <ul class="font-['Anonymous_Pro'] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
-      <li class="p-6 border flex items-center" v-for="repo in paginatedRepos" :key="repo.id">
+      <li class="p-6 border flex items-center text-left" v-for="repo in paginatedRepos" :key="repo.id">
         <router-link :to="{ name: 'repo', params: { id: repo.name } }">
           {{ repo.name }}
         </router-link>
@@ -9,8 +9,8 @@
     </ul>
     <div class="space-x-4 mt-12">
       <button class="border px-6 py-2" v-if="currentPage > 1" @click="previousPage">Previous</button>
-      <span class="border px-6 py-2">{{ currentPage }}</span>
-      <span class="border px-6 py-2">{{ currentPage + 1 }}</span>
+      <span class="border px-4 py-2">{{ currentPage }}</span>
+      <span class="border px-4 py-2">{{ currentPage + 1 }}</span>
       <button class="border px-6 py-2" v-if="currentPage < totalPages" @click="nextPage">Next</button>
     </div>
   </div>
@@ -22,7 +22,7 @@ import { routerLink } from "vue-router";
 
 export default {
   components: {
-    routerLink,
+    'router-link': routerLink,
   },
   data() {
     return {
