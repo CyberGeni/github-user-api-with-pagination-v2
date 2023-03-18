@@ -2,7 +2,7 @@
   <div class="p-12">
     <ul class="font-['Anonymous_Pro'] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
       <li class="p-6 border flex items-center text-left" v-for="repo in paginatedRepos" :key="repo.id">
-        <router-link :to="{ name: 'repo', params: { id: repo.name } }">
+        <router-link :to="`/repo/${repo.name}`">
           {{ repo.name }}
         </router-link>
       </li>
@@ -22,7 +22,7 @@ import { routerLink } from "vue-router";
 
 export default {
   components: {
-    'router-link': routerLink,
+    routerLink,
   },
   data() {
     return {
@@ -43,8 +43,10 @@ export default {
         .get(apiUrl)
         .then((response) => {
           this.repos = response.data;
+          console.log(this.repos[1])
           this.totalPages = Math.ceil(this.repos.length / this.perPage);
         })
+
         .catch((error) => {
           console.log(error);
         });
