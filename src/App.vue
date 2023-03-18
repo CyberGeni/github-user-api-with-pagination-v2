@@ -1,5 +1,5 @@
 <template class="">
-  <div class="min-h-screen text-sky-200">
+  <div class="relative min-h-screen text-sky-200">
     <header
       class="font-['VT323'] border-b border-sky-600 py-6 flex items-center justify-between px-8 sm:px-12 md:px-16"
     >
