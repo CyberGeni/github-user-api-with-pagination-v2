@@ -1,19 +1,65 @@
 <template>
-  
-    <div v-if="repo">
-      <h2>{{ repo.name }}</h2>
-      <p>{{ repo.url }}</p>
-      <!-- Add more details as needed -->
+  <div
+    v-if="repo"
+    class="font-['Anonymous_Pro'] h-[85vh] flex flex-col items-center justify-center"
+  >
+    <div class="flex flex-col w-5/6 md:w-3/5 max-w-xl">
+      <button class="w-fit border px-3 py-1 my-4">
+        <router-link class="flex items-center justify-center" to="/">
+          <svg
+            class="mr-2"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+          >
+            <path fill="none" d="M0 0h24v24H0z" />
+            <path
+              d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z"
+              fill="rgba(186,230,253,1)"
+            />
+          </svg>
+          go back
+        </router-link>
+      </button>
+      <div class="border p-4">
+        <!-- <img
+        :src="repo.owner.avatar_url"
+        alt="avatar"
+        class="w-20 h-20 rounded-full"
+      /> -->
+        <h2>{{ repo.name }}</h2>
+        <p class="">{{ repo.url }}</p>
+      </div>
+      <button class="w-fit border px-3 pr-2 py-1 my-4 self-end">
+        <a class="flex items-center justify-center" :href="repo.html_url">
+          go to github
+          <svg
+            class="ml-2 rotate-180"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+          >
+            <path fill="none" d="M0 0h24v24H0z" />
+            <path
+              d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z"
+              fill="rgba(186,230,253,1)"
+            />
+          </svg>
+        </a>
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 export default {
-  props: ['id'],
+  props: ["id"],
   created() {
-    console.log('in created')
-    console.log(this.$route.params.id)
+    console.log("in created");
+    console.log(this.$route.params.id);
   },
   data() {
     return {
@@ -21,21 +67,21 @@ export default {
     };
   },
   mounted() {
-  // Fetch the repo details based on the route param
-  const repoName = this.$route.params.id;
-  console.log( repoName);
-  console.log('in mounted')
-  // Make a GET request to the GitHub API for the repo data
-  axios.get(`https://api.github.com/repos/cybergeni/${repoName}`)
-    .then((response) => {
-      this.repo = response.data;
-      console.log( response.data);
-      console.log( this.repo);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-},
-
+    // Fetch the repo details based on the route param
+    const repoName = this.$route.params.id;
+    console.log(repoName);
+    console.log("in mounted");
+    // Make a GET request to the GitHub API for the repo data
+    axios
+      .get(`https://api.github.com/repos/cybergeni/${repoName}`)
+      .then((response) => {
+        this.repo = response.data;
+        console.log(response.data);
+        console.log(this.repo);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
 };
 </script>

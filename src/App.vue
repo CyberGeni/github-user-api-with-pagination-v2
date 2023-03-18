@@ -5,7 +5,6 @@
     </header>
     <main class="w-5/6 border-x border-sky-600 mx-auto h-full">
       <router-view></router-view>
-
     </main>
   </div>
 </template>
