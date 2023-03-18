@@ -1,17 +1,82 @@
 <template>
   <div class="p-12">
-    <ul class="font-['Anonymous_Pro'] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
-      <li class="p-6 border flex items-center text-left" v-for="repo in paginatedRepos" :key="repo.id">
-        <router-link :to="`/repo/${repo.name}`">
-          {{ repo.name }}
+    <ul
+      class="font-['Anonymous_Pro'] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12"
+    >
+      <li v-for="repo in paginatedRepos" :key="repo.id" class="h-auto">
+        <router-link
+          class="p-6 border hover:border-y-4 hover:border-sky-600 transition-all flex flex-col text-left h-full"
+          :to="`/repo/${repo.name}`"
+        >
+          name: {{ repo.name }}
+          <p class="opacity-90 my-2" v-if="repo.description">
+            <span>{{ repo.description }}</span>
+          </p>
+          <p class="opacity-75" v-if="!repo.description">
+            <span class="opacity-50 italic"> no description</span>
+          </p>
         </router-link>
       </li>
     </ul>
-    <div class="space-x-4 mt-12">
+    <!-- <div class="space-x-4 mt-12">
       <button class="border px-6 py-2" v-if="currentPage > 1" @click="previousPage">Previous</button>
       <span class="border px-4 py-2">{{ currentPage }}</span>
       <span class="border px-4 py-2">{{ currentPage + 1 }}</span>
       <button class="border px-6 py-2" v-if="currentPage < totalPages" @click="nextPage">Next</button>
+    </div> -->
+    <div class="space-x-4 mt-12">
+      <!-- <button @click="goToPage(1)" :disabled="currentPage === 1">First</button> -->
+      <button
+        class="border p-2"
+        @click="goToPage(currentPage - 1)"
+        :disabled="currentPage === 1"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          width="24"
+          height="24"
+        >
+          <path fill="none" d="M0 0h24v24H0z" />
+          <path
+            d="M10.828 12l4.95 4.95-1.414 1.414L8 12l6.364-6.364 1.414 1.414z"
+            fill="rgba(186,230,253,1)"
+          />
+        </svg>
+      </button>
+      <button
+        class="border px-4 py-2"
+        v-for="pageNumber in totalPages"
+        :key="pageNumber"
+        @click="goToPage(pageNumber)"
+        :class="{ active: currentPage === pageNumber }"
+      >
+        {{ pageNumber }}
+      </button>
+      <button
+        class="border p-2"
+        @click="goToPage(currentPage + 1)"
+        :disabled="currentPage === totalPages"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          width="24"
+          height="24"
+        >
+          <path fill="none" d="M0 0h24v24H0z" />
+          <path
+            d="M13.172 12l-4.95-4.95 1.414-1.414L16 12l-6.364 6.364-1.414-1.414z"
+            fill="rgba(186,230,253,1)"
+          />
+        </svg>
+      </button>
+      <!-- <button
+        @click="goToPage(totalPages)"
+        :disabled="currentPage === totalPages"
+      >
+        Last
+      </button> -->
     </div>
   </div>
 </template>
@@ -26,48 +91,42 @@ export default {
   },
   data() {
     return {
-      repos: [],
-      perPage: 9,
-      currentPage: 1,
-      totalPages: 1,
-      username: "cybergeni",
+      repos: [], // Your fetched repository data
+      pageSize: 6, // Number of items to display per page
+      currentPage: 1, // The current page number
     };
-  },
-  mounted() {
-    this.fetchRepos();
-  },
-  methods: {
-    fetchRepos() {
-      const apiUrl = `https://api.github.com/users/${this.username}/repos`;
-      axios
-        .get(apiUrl)
-        .then((response) => {
-          this.repos = response.data;
-          console.log(this.repos[1])
-          this.totalPages = Math.ceil(this.repos.length / this.perPage);
-        })
-
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-      }
-    },
-    previousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-      }
-    },
   },
   computed: {
     paginatedRepos() {
-      const startIndex = (this.currentPage - 1) * this.perPage;
-      const endIndex = startIndex + this.perPage;
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
       return this.repos.slice(startIndex, endIndex);
     },
+    totalPages() {
+      return Math.ceil(this.repos.length / this.pageSize);
+    },
+  },
+  methods: {
+    async fetchRepos() {
+      console.log('Fetching repositories...');
+      const token = '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';
+      const config = {
+        headers: {
+          'Authorization': `token ${token}`,
+        },
+      };
+      const response = await axios.get('https://api.github.com/users/cybergeni/repos?per_page=100', config);
+      this.repos = response.data;
+      console.log(this.repos);
+    },
+    goToPage(pageNumber) {
+      if (pageNumber >= 1 && pageNumber <= this.totalPages) {
+        this.currentPage = pageNumber;
+      }
+    },
+  },
+  mounted() {
+    this.fetchRepos();
   },
 };
 </script>

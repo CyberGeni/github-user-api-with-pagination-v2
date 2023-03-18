@@ -22,18 +22,17 @@
           go back
         </router-link>
       </button>
-      <div class="border p-4">
-        <!-- <img
-        :src="repo.owner.avatar_url"
-        alt="avatar"
-        class="w-20 h-20 rounded-full"
-      /> -->
-        <h2>{{ repo.name }}</h2>
-        <p class="">{{ repo.url }}</p>
+      <div class="border p-4 text-left space-y-3">
+        <h2><span>REPO NAME:</span> {{ repo.name }}</h2>
+        <h2><span>DESCRIPTION:</span> {{ repo.description }}<span v-if="!repo.description" class="opacity-50 italic"> no description</span></h2>
+        <h2><span>LANGUAGE:</span> {{ repo.language }}</h2>
+        <h2><span>STARGAZERS:</span> {{ repo.stargazers_count }}</h2>
+        <h2><span>FORKS:</span> {{ repo.forks }}</h2>
+        <h2><span>LAST UPDATED AT:</span> {{ formateDate(repo.updated_at) }}</h2>
       </div>
       <button class="w-fit border px-3 pr-2 py-1 my-4 self-end">
         <a class="flex items-center justify-center" :href="repo.html_url">
-          go to github
+          go to repo on github
           <svg
             class="ml-2 rotate-180"
             xmlns="http://www.w3.org/2000/svg"
@@ -58,8 +57,8 @@ import axios from "axios";
 export default {
   props: ["id"],
   created() {
-    console.log("in created");
-    console.log(this.$route.params.id);
+    // console.log("in created");
+    // console.log(this.$route.params.id);
   },
   data() {
     return {
@@ -82,6 +81,15 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+  },
+  methods: {
+    formateDate(date) {
+      return new Date(date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    },
   },
 };
 </script>
