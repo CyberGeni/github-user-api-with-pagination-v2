@@ -68,8 +68,8 @@ export default {
   mounted() {
     // Fetch the repo details based on the route param
     const repoName = this.$route.params.id;
-    console.log(repoName);
-    console.log("in mounted");
+    // console.log(repoName);
+    // console.log("in mounted");
     // Make a GET request to the GitHub API for the repo data
     axios
       .get(`https://api.github.com/repos/cybergeni/${repoName}`)

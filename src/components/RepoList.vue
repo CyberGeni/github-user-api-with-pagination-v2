@@ -27,7 +27,7 @@
     <div class="space-x-4 mt-12">
       <!-- <button @click="goToPage(1)" :disabled="currentPage === 1">First</button> -->
       <button
-        class="border p-2"
+        class="border p-2 disabled:bg-slate-700"
         @click="goToPage(currentPage - 1)"
         :disabled="currentPage === 1"
       >
@@ -54,7 +54,7 @@
         {{ pageNumber }}
       </button>
       <button
-        class="border p-2"
+        class="border p-2 disabled:bg-slate-700 "
         @click="goToPage(currentPage + 1)"
         :disabled="currentPage === totalPages"
       >
@@ -109,15 +109,15 @@ export default {
   methods: {
     async fetchRepos() {
       console.log('Fetching repositories...');
-      const token = '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';
+      const token = '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';
       const config = {
         headers: {
-          'Authorization': `token ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
       const response = await axios.get('https://api.github.com/users/cybergeni/repos?per_page=100', config);
       this.repos = response.data;
-      console.log(this.repos);
+      console.log(this.repos[0].open_graph_image_url);
     },
     goToPage(pageNumber) {
       if (pageNumber >= 1 && pageNumber <= this.totalPages) {
@@ -130,3 +130,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.active {
+  background-color: rgba(186, 230, 253, 1);
+  color: rgba(0, 0, 0, 1);
+}
+</style>
