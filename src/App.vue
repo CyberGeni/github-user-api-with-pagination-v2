@@ -1,7 +1,9 @@
 <template class="">
   <div class=" min-h-screen text-sky-200">
-    <header class="border-b border-sky-600 py-6">
-      <div class="font-['VT323'] text-3xl">cybergenie</div>
+    <header class="font-['VT323'] border-b border-sky-600 py-6 flex items-center justify-between px-8 sm:px-12 md:px-16">
+      <span>{{ date }}</span>
+      <div class=" text-3xl md:text-4xl">cybergenie</div>
+      <span>{{ time }}</span>
     </header>
     <main class="w-5/6 border-x border-sky-600 mx-auto h-full">
       <router-view></router-view>
@@ -17,6 +19,22 @@ export default {
   // components: {
   //   RepoList,
   // },
+  data() {
+    return {
+      date: new Date().toLocaleDateString(),
+      time: new Date().toLocaleTimeString(),
+    };
+  },
+  mounted() {
+    setInterval(() => {
+      this.date = new Date().toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      this.time = new Date().toLocaleTimeString();
+    }, 1000);
+  },
 };
 </script>
 

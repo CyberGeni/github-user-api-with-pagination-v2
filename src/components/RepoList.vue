@@ -45,7 +45,7 @@
         </svg>
       </button>
       <button
-        class="border px-4 py-2"
+        class="hover:border-sky-600 border px-4 py-2 m-2 "
         v-for="pageNumber in totalPages"
         :key="pageNumber"
         @click="goToPage(pageNumber)"
