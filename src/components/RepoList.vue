@@ -1,6 +1,7 @@
 <template>
   <div class="p-12">
-    <ul
+    <div v-if="loading" class="h-[60vh] flex items-center justify-center">loading...</div>
+    <ul v-if="!loading"
       class="font-['Anonymous_Pro'] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12"
     >
       <li v-for="repo in paginatedRepos" :key="repo.id" class="h-auto">
@@ -18,14 +19,9 @@
         </router-link>
       </li>
     </ul>
-    <!-- <div class="space-x-4 mt-12">
-      <button class="border px-6 py-2" v-if="currentPage > 1" @click="previousPage">Previous</button>
-      <span class="border px-4 py-2">{{ currentPage }}</span>
-      <span class="border px-4 py-2">{{ currentPage + 1 }}</span>
-      <button class="border px-6 py-2" v-if="currentPage < totalPages" @click="nextPage">Next</button>
-    </div> -->
+
     <div class="space-x-4 mt-12">
-      <!-- <button @click="goToPage(1)" :disabled="currentPage === 1">First</button> -->
+
       <button
         class="border p-2 disabled:bg-slate-700"
         @click="goToPage(currentPage - 1)"
@@ -91,6 +87,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       repos: [], // Your fetched repository data
       pageSize: 6, // Number of items to display per page
       currentPage: 1, // The current page number
@@ -109,10 +106,10 @@ export default {
   methods: {
     async fetchRepos() {
       console.log('Fetching repositories...');
-     
+     this.loading = true;
       const response = await axios.get('https://api.github.com/users/cybergeni/repos?per_page=100');
       this.repos = response.data;
-      console.log(this.repos[0].open_graph_image_url);
+      this.loading = false;
     },
     goToPage(pageNumber) {
       if (pageNumber >= 1 && pageNumber <= this.totalPages) {
