@@ -109,13 +109,8 @@ export default {
   methods: {
     async fetchRepos() {
       console.log('Fetching repositories...');
-      const token = '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';
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const response = await axios.get('https://api.github.com/users/cybergeni/repos?per_page=100', config);
+     
+      const response = await axios.get('https://api.github.com/users/cybergeni/repos?per_page=100');
       this.repos = response.data;
       console.log(this.repos[0].open_graph_image_url);
     },
